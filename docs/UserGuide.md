@@ -7,7 +7,7 @@ Doc’it provides a centralised platform for authorised staff from small family 
 patient records, solving the inefficient paper records and files used today. With Doc’it, small family clinics can
 reduce man-hours in managing paper files, translating this ‘saved’ time into better frontline care services.
 * Table of Contents
-{:toc}
+  {:toc}
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -52,8 +52,8 @@ reduce man-hours in managing paper files, translating this ‘saved’ time into
 * Items in square brackets are optional.<br>
   e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
 
-* Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
+* Items with `…`  after them can be used multiple times including zero times.<br>
+  e.g. `[t/TAG]… ` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
 
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
@@ -75,80 +75,75 @@ Shows a message explaning how to access the help page.
 Format: `help`
 
 
-### Adding a person: `add`
+### Adding a patient: `add -p`
 
-Adds a person to the address book.
+Creates a new patient record.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
+**Format:** `add -p f/FAMILY_NAME n/GIVEN_NAME m/[MEDICAL_HISTORY]`
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A person can have any number of tags (including 0)
-</div>
+- `MEDICAL_HISTORY` is optional; if `MEDICAL_HISTORY` is not given, an empty text will be used
 
-Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+**Examples:**
+- `add -p f/Lim n/Joshen`
+- `add -p f/Lim n/Joshen m/lovesick`
 
-### Listing all persons : `list`
+**Expected Outcome:**
+New patient created: Lim, Joshen; Patient ID: 0001
 
-Shows a list of all persons in the address book.
+---
+
+### Listing all patients : `list`
+
+Shows a list of all patients in the record system.
 
 Format: `list`
 
-### Editing a person : `edit`
+---
 
-Edits an existing person in the address book.
+### Editing a patient : `[coming in v1.2]`
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+_Details coming soon ..._
 
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
-* At least one of the optional fields must be provided.
-* Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
+---
 
-Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+### Locating patients by name: `view -p`
 
-### Locating persons by name: `find`
+Views an existing patient record.
 
-Finds persons whose names contain any of the given keywords.
+**Format:** `view -p id/PATIENT_ID` or `view -p name/FULL_NAME`
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
+**Examples:**
+- `view -p id/0001`
+- `view -p name/Joshen`
+- `view -p name/Lim Joshen`
+- `view -p name/Joshen Lim`
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+**Expected Outcome:**
+Patient Name: Lim, Joshen
+Patient ID: 0001
+Appointment List: 2021-10-05, 2021-09-04
+Medical History: lovesick
+Prescription: panadol
 
-Examples:
-* `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+---
 
-### Deleting a person : `delete`
+### Deleting a patient : `delete -p`
 
-Deletes the specified person from the address book.
+Deletes a patient record, including all information about the patient.
 
-Format: `delete INDEX`
+**Format:** `delete -p id/PATIENT_ID`
 
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
+- Deletes the patient with the specified `PATIENT_ID`.
 
-Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+**Examples:**
+- `delete -p id/0001`
 
-### Clearing all entries : `clear`
+**Expected Outcome:**
+Deleted the following patient from records:
+Patient Name: Lim, Joshen
+Patient ID: 0001
 
-Clears all entries from the address book.
-
-Format: `clear`
+---
 
 ### Exiting the program : `exit`
 
@@ -156,21 +151,98 @@ Exits the program.
 
 Format: `exit`
 
-### Saving the data
+---
 
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
-
-### Editing the data file
-
-AddressBook data are saved as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
-
-<div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
-If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run.
-</div>
-
-### Archiving data files `[coming in v2.0]`
+### Clearing all entries : `[coming in v1.2]`
 
 _Details coming soon ..._
+
+---
+
+### Saving the data `[coming in v1.2]`
+
+_Details coming soon ..._
+
+---
+
+### Editing the data file `[coming in v1.2]`
+
+_Details coming soon ..._
+
+---
+
+### Archiving data files `[coming in v1.2]`
+
+_Details coming soon ..._
+
+
+## Appointments
+A patient in our patient record may have appointments to visit the family clinic. In the appointment view, each appointment on the appointment list indicates an upcoming visit to the clinic. To help small family clinics manage their upcoming appointments for its patients, Doc’It records the following attributes for appointment:
+
+* Patient’s Name: The patient’s name matching in the patient record.
+* Appointment Date: The date of the appointment 
+
+
+## Listing all appointments: `list`
+Shows a list of all appointments. 
+
+Format: `list -a`
+
+Example:  
+* `list -a`  Lists all appointments.
+
+Expected Outcome:  
+1. Patient Name: Lim, Joshen  Appointment Date: 2021-10-05  
+2. Patient Name: Yong, Ian Appointment Date: 2021-10-06  
+
+
+## Adding an appointment: `add`
+Adds an appointment for the patient of the specified patient id.  
+
+Format: `add -a n/PATIENT_ID d/DATE`  
+
+Examples:  
+* `list`  List all patients.
+* `add -a n/1 d/2021-10-05`  Adds appointment to patient of ID 1.
+
+Expected Outcome:  
+New appointment added:  
+Patient Name: Lim, Joshen  Appointment Date: 2021-10-05  
+
+
+## Deleting an appointment: `delete`
+Deletes the appointment at the specified index.
+
+Format: `delete -a INDEX`  
+* Deletes the appointment at the specified INDEX.  
+* The index refers to the index number shown in the displayed appointment list.  
+* The index must be a positive integer 1, 2, 3, …​  
+
+Examples:
+* `list -a`  Lists all appointments.  
+* `delete -a 1`  Deletes appointment at index 1. 
+
+Expected Outcome:  
+Appointment deleted:  
+Patient Name: Lim, Joshen  Appointment Date: 2021-10-05  
+
+
+## Archiving an appointment:  `archive`
+Archives an old appointment that is already past its date.
+
+Format: `archive -a INDEX`
+* Archives the appointment at the specified INDEX.
+* The index refers to the index number shown in the displayed appointment list.
+* The index must be a positive integer 1, 2, 3, …​
+
+Examples:
+* `list -a`  Lists all appointments.
+* `archive -a 1`  Archives appointment at index 1.
+
+Expected Outcome:  
+Old appointment archived:  
+Patient Name: Lim, Joshen  Appointment Date: 2021-10-05  
+
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -185,10 +257,15 @@ _Details coming soon ..._
 
 Action | Format, Examples
 --------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
+**Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]… ` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
 **Clear** | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]… `<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
 **List** | `list`
 **Help** | `help`
+**List Appointment** | `list -a`
+**Add Appointment** | `add -a n/PATIENT_ID d/DATE` <br> e.g.,  `add -a n/1 d/2021-10-05`
+**Delete Appointment** | `delete -a INDEX` <br> e.g., `delete -a 1`
+**Archive Appointment** | `archive -a INDEX` <br> e.g., `archive -a 1`
+
