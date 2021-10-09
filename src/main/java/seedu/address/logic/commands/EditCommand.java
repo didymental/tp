@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_MEDICAL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
@@ -45,7 +46,8 @@ public class EditCommand extends Command {
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_PHONE + "91234567 "
-            + PREFIX_EMAIL + "johndoe@example.com";
+            + PREFIX_EMAIL + "johndoe@example.com"
+            + PREFIX_MEDICAL + "lovesick";
 
     public static final String MESSAGE_EDIT_PERSON_SUCCESS = "Edited Person: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
@@ -99,7 +101,8 @@ public class EditCommand extends Command {
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(patientToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(patientToEdit.getAddress());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(patientToEdit.getTags());
-        MedicalHistory medicalHistory = editPersonDescriptor.getDob().orElse(patientToEdit.getMedicalHistory());
+        MedicalHistory medicalHistory = editPersonDescriptor.getMedicalHistory()
+                                            .orElse(patientToEdit.getMedicalHistory());
 
         return new Patient(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags, medicalHistory);
     }
@@ -146,7 +149,7 @@ public class EditCommand extends Command {
             setEmail(toCopy.email);
             setAddress(toCopy.address);
             setTags(toCopy.tags);
-            setDob(toCopy.medicalHistory);
+            setMedicalHistory(toCopy.medicalHistory);
 
         }
 
@@ -189,11 +192,11 @@ public class EditCommand extends Command {
             return Optional.ofNullable(address);
         }
 
-        public void setDob(MedicalHistory medicalHistory) {
+        public void setMedicalHistory(MedicalHistory medicalHistory) {
             this.medicalHistory = medicalHistory;
         }
 
-        public Optional<MedicalHistory> getDob() {
+        public Optional<MedicalHistory> getMedicalHistory() {
             return Optional.ofNullable(medicalHistory);
         }
 

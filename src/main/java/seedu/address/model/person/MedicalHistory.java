@@ -19,7 +19,11 @@ public class MedicalHistory {
         int size = this.medicalHistory.size();
         String toReturn = "";
         for (int i = 0; i < size; i++) {
-            toReturn = toReturn + (i + 1) + this.medicalHistory.get(i) + "\n";
+            if (i == size - 1) {
+                toReturn = toReturn + this.medicalHistory.get(i);
+            } else {
+                toReturn = toReturn + this.medicalHistory.get(i) + ", ";
+            }
         }
         return toReturn;
     }
