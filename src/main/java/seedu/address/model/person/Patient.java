@@ -25,20 +25,19 @@ public class Patient {
     private final Set<Tag> tags = new HashSet<>();
 
     // Patient specific fields
-    // private final DateOfBirth dateOfBirth;
-    //private final MedicalHistory medicalHistory;
-    //private final Prescription prescription;
+    private final MedicalHistory medicalHistory;
 
     /**
      * Every field must be present and not null.
      */
-    public Patient(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
+    public Patient(Name name, Phone phone, Email email, Address address, Set<Tag> tags, MedicalHistory medicalHistory) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.tags.addAll(tags);
+        this.medicalHistory = medicalHistory;
     }
 
     public Name getName() {
@@ -63,6 +62,10 @@ public class Patient {
      */
     public Set<Tag> getTags() {
         return Collections.unmodifiableSet(tags);
+    }
+
+    public MedicalHistory getMedicalHistory() {
+        return this.medicalHistory;
     }
 
     /**
@@ -117,11 +120,14 @@ public class Patient {
                 .append("; Address: ")
                 .append(getAddress());
 
+
         Set<Tag> tags = getTags();
         if (!tags.isEmpty()) {
             builder.append("; Tags: ");
             tags.forEach(builder::append);
         }
+
+        builder.append(getMedicalHistory());
         return builder.toString();
     }
 
