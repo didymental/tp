@@ -11,9 +11,8 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
-
-import seedu.address.model.person.Patient;
 import seedu.address.model.appointment.Appointment;
+import seedu.address.model.person.Patient;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -227,9 +226,9 @@ public class ModelManager implements Model {
         ModelManager other = (ModelManager) obj;
         return addressBook.equals(other.addressBook)
                 && userPrefs.equals(other.userPrefs)
-                && filteredPatients.equals(other.filteredPatients);
+                && filteredPatients.equals(other.filteredPatients)
                 && appointmentBook.equals(other.appointmentBook)
-                && filteredAppointments.equals(other.filteredAppointments)
+                && filteredAppointments.equals(other.filteredAppointments);
     }
 
 }
