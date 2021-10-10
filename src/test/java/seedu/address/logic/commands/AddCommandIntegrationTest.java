@@ -7,6 +7,7 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import seedu.address.model.AppointmentBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -20,9 +21,8 @@ public class AddCommandIntegrationTest {
 
     private Model model;
 
-    @BeforeEach
-    public void setUp() {
-        model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    @BeforeEach public void setUp() {
+        model = new ModelManager(getTypicalAddressBook(), new AppointmentBook(), new UserPrefs());
     }
 
     @Test
